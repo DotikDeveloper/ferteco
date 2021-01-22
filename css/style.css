@@ -7,6 +7,7 @@ header,
 }
 
 @media (min-width: 560px) and (max-width: 740px) {
+
   html,
   body,
   header,
@@ -16,26 +17,38 @@ header,
 }
 
 @media (min-width: 800px) and (max-width: 850px) {
-    html,
-    body,
-    header,
-    .jarallax {
-      height: 600px;
-    }
+
+  html,
+  body,
+  header,
+  .jarallax {
+    height: 600px;
+  }
 }
 
 @media (min-width: 800px) and (max-width: 850px) {
-    .navbar:not(.top-nav-collapse) {
-        background: #24355c!important;
-    }
-    .navbar {
-      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12) !important;
-    }
+  .navbar:not(.top-nav-collapse) {
+    background: #24355c !important;
+  }
+
+  .navbar {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12) !important;
+  }
 }
 
 #home {
-  background-image: url('../img/landscape.jpg'); 
-  background-repeat: no-repeat; 
-  background-size: cover; 
+  background-image: url('../img/landscape.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center center;
+}
+
+#exampleModal1 {
+  display: inline-flex;
+}
+
+@media (max-width: 768px) {
+  #exampleModal1 div.modal-body .container {
+    display: block !important;
+  }
 }
