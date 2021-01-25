@@ -1,45 +1,70 @@
 <?php
 
-  $_POST = json_decode(file_get_contents("php://input"), true);
+  $name    = (isset($_POST['name'])) ? $_POST['name'] : '';
+  $email   = (isset($_POST['email'])) ? $_POST['email'] : '';
+  $message = (isset($_POST['message'])) ? $_POST['message'] : '';
 
-  $method = $_SERVER['REQUEST_METHOD'];
-  $c = true;
-
-  $project_name = trim($_POST["project_name"]);
-  $admin_email  = trim($_POST["admin_email"]);
-  $form_subject = trim($_POST["form_subject"]);
-
-
-  foreach ( $_POST as $key => $value ) {
-    if ( is_array($value) ) {
-      $value = implode(", ", $value);
-    }
-    if ( $value != "" && $key != "project_name" && $key != "admin_email" && $key != "form_subject" ) {
-      $message .= "
-      " . ( ($c = !$c) ? '<tr>':'<tr style="background-color: #f8f8f8;">' ) . "
-        <td style='padding: 10px; border: #e2dddd 1px solid;'><b>$key</b></td>
-        <td style='padding: 10px; border: #e2dddd 1px solid;'>$value</td>
-      </tr>
-      ";
-    }
+  header('Content-Type: application/json');
+  if ($name === '') {
+    $response =  json_encode(array(
+      'message' => 'Name cannot be empty',
+      'code' => 0
+    ));
+    die($response);
+  }
+  if ($email === '') {
+    $response =  json_encode(array(
+      'message' => 'Email cannot be empty',
+      'code' => 0
+    ));
+    die($response);
+  } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $response =  json_encode(array(
+      'message' => 'Email format invalid.',
+      'code' => 0
+    ));
+    die($response);
+  }
+  if ($message === '') {
+    $response =  json_encode(array(
+      'message' => 'Message cannot be empty',
+      'code' => 0
+    ));
+    die($response);
   }
 
-  $message = "<table style='width: 100%;'>$message</table>";
+  "From: $name \n Email: $email \n Message: $message";
 
-  function adopt($text) {
-      return '=?UTF-8?B?'.Base64_encode($text).'?=';
-  }
+  $content    =  "<table style='width: 100%;'>
+                  <tr style='background-color: #f8f8f8;'>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'><b>Запрос с сайта</b></td>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'>fertecom.site</td>
+                  </tr>
+                  <tr>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'><b>Имя</b></td>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'>$name</td>
+                  </tr>
+                  <tr>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'><b>Email</b></td>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'>$email</td>
+                  </tr>
+                  <tr>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'><b>Сообщение</b></td>
+                      <td style='padding: 10px; border: #e2dddd 1px solid;'>$message</td>
+                  </tr>
+              </table>";
 
-  $headers = "MIME-Version: 1.0" . PHP_EOL .
-  "Content-Type: text/html; charset=utf-8" . PHP_EOL .
-  'From: '.adopt($project_name).' <'.$admin_email.'>' . PHP_EOL .
-  'Reply-To: '.$admin_email.'' . PHP_EOL;
+  $recipient  = "contact@dotdev.site, contact@fertecom.site";
 
-  if (mail($admin_email, adopt($form_subject), $message, $headers )) {
-      http_response_code(200);
-      echo "mail sending";
-  } else {
-      http_response_code(400);
-      echo "Error server! Try sending a request in 10 minutes.";
-  };
+  $mailheader = array(
+    'From' => $email,
+    'Content-Type' => 'text/html;charset=UTF-8',
+  );
+  mail($recipient, 'fertecom', $content, $mailheader) or die("Error!");
+  $response =  json_encode(array(
+    'message' => 'Email successfully sent!',
+    'code' => 1
+  ));
+  die($response);
+
 ?>

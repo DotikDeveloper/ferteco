@@ -732,21 +732,21 @@
             <a type="button"><i class="fas fa-times text-white" data-btn="closeModal"></i></a>
           </div>
           <div class="modal-body">
-            <form id="form" action="./mail.php" method="POST">
+            <form id="form" action="./pages/mail.php" method="POST">              
               <div class="md-form md-outline mb-4">
-                <input type="text" id="name" required name="name" class="form-control" />
+                <input type="text" id="name" name="name" data-form class="form-control" />
                 <label class="form-label" for="name">Name*</label>
               </div>
         
               <div class="md-form md-outline mb-4">
-                <input type="email" id="email" required name="email" class="form-control" />
+                <input type="email" id="email" name="email" data-form class="form-control" />
                 <label class="form-label" for="email">Email*</label>
               </div>
 
-              <input type="hidden" name="project_name" value="fertecom.site">
-              <input type="hidden" name="admin_email"  value="contact@dotdev.site, contact@fertecom.site">
-              <input type="hidden" name="form_subject" value="Форма с сайта удобрений">
-        
+              <div class="md-form md-outline mb-4">
+                <textarea class="form-control" id="message" name="message" data-form rows="4"></textarea>
+                <label class="form-label" for="message">Message</label>
+              </div>         
               <!-- Submit button -->
               <hr>
               <button id="custom-validation-button" type="submit" class="btn btn-danger custom__btn btn-block mb-4">
@@ -756,6 +756,8 @@
               <!-- Status message -->
               <div id="status"></div>
             </form>
+
+
           </div>          
         </div>
       </div>
